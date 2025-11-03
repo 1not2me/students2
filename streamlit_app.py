@@ -737,4 +737,31 @@ if submitted:
             "ממוצע": avg_grade,
             "התאמות": "; ".join(adjustments_proc),
             "התאמות פרטים": adjustments_details.strip(),
-            "מוטיבציה
+            "מוטיבציה 1": m1,
+            "מוטיבציה 2": m2,
+            "מוטיבציה 3": m3,
+            "אישור הגעה להכשרה": "כן" if arrival_confirm else "לא",
+        }
+
+        # 1) שדות "מקום הכשרה i"
+        for i in range(1, RANK_COUNT + 1):
+            row[f"מקום הכשרה {i}"] = st.session_state.get(f"rank_{i}")
+        # 2) Site -> Rank (לשימוש נוח ב-Excel)
+        for s in SITES:
+            rank_value = site_to_rank.get(s)
+            row[f"דירוג_{s}"] = rank_value if isinstance(rank_value, int) else ""
+
+        try:
+            # שמירה במאסטר + Google Sheets
+            save_master_dataframe(row)
+
+            # יומן Append-Only
+            append_to_log(pd.DataFrame([row]))
+            
+            # איפוס המצב לאחר שליחה מוצלחת
+            st.session_state.clear()
+
+
+            st.success("✅ הטופס נשלח ונשמר בהצלחה! תודה רבה.")
+        except Exception as e:
+            st.error(f"❌ שמירה נכשלה: {e}")

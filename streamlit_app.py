@@ -421,10 +421,9 @@ if step == 1:
     )
     st.markdown("**בחר/י מוסד לכל מקום הכשרה (1 = הכי רוצים, 3 = הכי פחות). הבחירה כובלת קדימה — מוסדות שנבחרו ייעלמו מהבחירות הבאות.**")
 
-    # אתחול מצב הבחירות
+    # --- אתחול מצב הבחירות (ללא מפתחות עזר) ---
     for i in range(1, RANK_COUNT + 1):
         st.session_state.setdefault(f"rank_{i}", "— בחר/י —")
-        st.session_state.setdefault(f"rank_{i}_select", "— בחר/י —")
 
     def options_for_rank(rank_i: int) -> list:
         current = st.session_state.get(f"rank_{rank_i}", "— בחר/י —")
@@ -437,25 +436,15 @@ if step == 1:
         with cols[(i - 1) % 2]:
             opts = options_for_rank(i)
             current = st.session_state.get(f"rank_{i}", "— בחר/י —")
-            sel = st.selectbox(
+            # FIX: משתמשים בדיוק באותו key בלי לדרוס session_state ידנית
+            st.selectbox(
                 f"מקום הכשרה {i} (בחר/י מוסד) *",
                 options=opts,
                 index=opts.index(current) if current in opts else 0,
-                key=f"rank_{i}_select_widget"
+                key=f"rank_{i}"
             )
-            st.session_state[f"rank_{i}"] = sel
-            st.session_state[f"rank_{i}_select"] = sel
 
-    # הסרת כפילויות בזמן אמת
-    used = set()
-    for i in range(1, RANK_COUNT + 1):
-        sel = st.session_state.get(f"rank_{i}", "— בחר/י —")
-        if sel != "— בחר/י —":
-            if sel in used:
-                st.session_state[f"rank_{i}"] = "— בחר/י —"
-                st.session_state[f"rank_{i}_select"] = "— בחר/י —"
-            else:
-                used.add(sel)
+    # *** הוסר: בלוק 'הסרת כפילויות בזמן אמת' שהיה מוחק נתונים בעת ריראנדר ***
 
     st.text_area("האם קיימת בקשה מיוחדת הקשורה למיקום או תחום ההתמחות? *", height=100, key="special_request")
 

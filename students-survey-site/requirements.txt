@@ -1,0 +1,8 @@
+Flask
+python-dotenv
+pandas
+gspread
+google-auth
+gspread-formatting
+XlsxWriter
+pytz

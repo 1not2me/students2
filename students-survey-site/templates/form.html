@@ -1,0 +1,370 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>שאלון שיבוץ סטודנטים – תשפ"ו</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+<header class="hero">
+  <h1>שאלון שיבוץ סטודנטים – תשפ״ו📝 </h1>
+  <p class="sub">מלאי/מלא את כל הסעיפים. השדות המסומנים ב-* הן חובה.</p>
+</header>
+
+<main class="container">
+
+  <!-- פס שלבים -->
+  <div class="stepper-wrap">
+    <ol id="stepper" class="stepper">
+      <li class="active">סעיף 1: פרטים אישיים</li>
+      <li>סעיף 2: העדפות שיבוץ</li>
+      <li>סעיף 3: נתונים אקדמיים</li>
+      <li>סעיף 4: התאמות</li>
+      <li>סעיף 5: מוטיבציה</li>
+      <li>סעיף 6: סיכום ושליחה</li>
+    </ol>
+  </div>
+
+  <!-- הטופס כולו נשלח ל-/submit -->
+  <form id="wizardForm" action="/submit" method="post" class="card">
+
+    <!-- שלב 1 -->
+    <section class="step active" data-step="1">
+      <h2>פרטים אישיים של הסטודנט/ית</h2>
+      <div class="grid">
+        <label>שם פרטי *<input name="first_name" required></label>
+        <label>שם משפחה *<input name="last_name" required></label>
+        <label>מספר תעודת זהות *<input name="nat_id" required></label>
+        <label>מין *
+  <div class="radio-group">
+    <label class="radio-option">
+      <input type="radio" name="gender" value="זכר" required>
+      <span>זכר</span>
+    </label>
+    <label class="radio-option">
+      <input type="radio" name="gender" value="נקבה" required>
+      <span>נקבה</span>
+    </label>
+  </div>
+</label>
+
+
+        <label>שיוך חברתי * 
+          <select name="social" required>
+            <option>יהודי/ה</option><option>מוסלמי/ת</option>
+            <option>נוצרי/ה</option><option>דרוזי/ת</option>
+          </select>
+        </label>
+        <label>שפת אם * 
+          <select id="mother_t" name="mother_t" required>
+            <option>עברית</option><option>ערבית</option><option>רוסית</option><option>אחר</option>
+          </select>
+        </label>
+        <label id="other_mt_wrap" style="display:none;">ציין/י שפת אם אחרת *<input name="other_mt"></label>
+
+        <!-- שפות נוספות – select + hidden + שדה "אחר" -->
+        <label>שפות נוספות * 
+  <select id="extra_langs" name="extra_langs" multiple size="4" required>
+    <option>עברית</option>
+    <option>ערבית</option>
+    <option>רוסית</option>
+    <option>אמהרית</option>
+    <option>אנגלית</option>
+    <option>ספרדית</option>
+    <option>אחר</option>
+  </select>
+</label>
+
+<!-- שורה חשובה! מוסתרת, מחזיקה את הבחירות בפורמט טקסט -->
+<input type="hidden" id="extraLangsJoined" name="extra_langs_joined">
+
+<label id="extra_other_wrap" style="display:none;">ציין/י שפה נוספת (אחר) *<input name="extra_other"></label>
+
+        <label>מספר טלפון *<input name="phone" placeholder="050-1234567" required></label>
+        <label>כתובת מלאה *<input name="address" required></label>
+        <label>אימייל *<input type="email" name="email" required></label>
+        <label>שנת לימודים *
+          <select id="study_year" name="study_year" required>
+            <option>תואר ראשון - שנה א</option><option>תואר ראשון - שנה ב</option><option>תואר ראשון - שנה ג'</option>
+            <option>תואר שני - שנה א'</option><option>תואר שני - שנה ב</option><option>אחר</option>
+          </select>
+        </label>
+        <label id="study_other_wrap" style="display:none;">פרט/י שנת לימודים *<input name="study_other"></label>
+        <label>מסלול לימודים *<input name="track" required></label>
+      </div>
+    </section>
+
+    <!-- שלב 2 -->
+    <section class="step" data-step="2">
+      <h2>העדפות שיבוץ</h2>
+
+      <label>הכשרה קודמת * 
+        <select id="prev_training" name="prev_training" required>
+          <option>לא</option><option>כן</option><option>אחר...</option>
+        </select>
+      </label>
+      <div class="grid prev-extra" style="display:none;">
+        <label>מקום ותחום<input name="prev_place"></label>
+        <label>מדריך ומיקום<input name="prev_mentor"></label>
+        <label>בן/בת זוג להכשרה<input name="prev_partner"></label>
+      </div>
+
+      <label>בחר/י עד 3 תחומים * 
+        <select id="domains" name="domains" multiple size="6" required>
+          <option>רווחה</option><option>מוגבלות</option><option>זקנה</option><option>ילדים ונוער</option>
+          <option>בריאות הנפש</option><option>שיקום</option><option>משפחה</option>
+          <option>נשים</option><option>בריאות</option><option>קהילה</option><option>אחר</option>
+        </select>
+      </label>
+      <label id="domains_other_wrap" style="display:none;">פרט/י תחום אחר *<input name="domains_other"></label>
+
+      <label>תחום מוביל *
+        <select id="top_domain" name="top_domain" required>
+          <option value="">— בחר/י —</option>
+        </select>
+      </label>
+
+      <div class="grid-2">
+        <label>מקום הכשרה 1 * 
+          <select class="rank" name="rank_1" required>
+            <option value="">— בחר/י —</option>
+            <option>כפר הילדים חורפיש</option><option>אנוש כרמיאל</option><option>הפוך על הפוך צפת</option>
+            <option>שירות מבחן לנוער עכו</option><option>כלא חרמון</option><option>בית חולים זיו</option>
+            <option>שירותי רווחה קריית שמונה</option><option>מרכז יום לגיל השלישי</option>
+            <option>מועדונית נוער בצפת</option><option>מרפאת בריאות הנפש צפת</option>
+          </select>
+        </label>
+        <label>מקום הכשרה 2 * 
+          <select class="rank" name="rank_2" required></select>
+        </label>
+        <label>מקום הכשרה 3 * 
+          <select class="rank" name="rank_3" required></select>
+        </label>
+      </div>
+
+      <label>בקשה מיוחדת *<textarea name="special_req" rows="3" placeholder="אפשר לכתוב 'אין'"></textarea></label>
+    </section>
+
+    <!-- שלב 3 -->
+    <section class="step" data-step="3">
+      <h2>נתונים אקדמיים</h2>
+      <label>ממוצע ציונים *<input type="number" name="avg_grade" step="0.1" min="0" required></label>
+    </section>
+
+    <!-- שלב 4 -->
+    <section class="step" data-step="4">
+      <h2>התאמות רפואיות/אישיות</h2>
+      <label>סוגי התאמות *
+        <select id="adjustments" name="adjustments" multiple size="6" required>
+          <option>אין</option><option>הריון</option>
+          <option>מגבלה רפואית (למשל: מחלה כרונית, אוטואימונית)</option>
+          <option>רגישות למרחב רפואי (למשל: לא לשיבוץ בבית חולים)</option>
+          <option>אלרגיה חמורה</option><option>נכות</option>
+          <option>רקע משפחתי רגיש (למשל: בן משפחה עם פגיעה נפשית)</option>
+          <option>אחר</option>
+        </select>
+      </label>
+      <label id="adj_other_wrap" style="display:none;">פרט/י התאמה אחרת *<input name="adj_other"></label>
+      <label id="adj_details_wrap" style="display:none;">פירוט התאמות *<textarea name="adj_details" rows="3"></textarea></label>
+    </section>
+
+    <!-- שלב 5 -->
+    <section class="step" data-step="5">
+      <h2>מוטיבציה</h2>
+      <div class="grid">
+        {% set likert = ["בכלל לא מסכים/ה","1","2","3","4","מסכים/ה מאוד"] %}
+        <label>1) מוכנות להשקיע מאמץ * 
+          <select name="m1" required>{% for x in likert %}<option>{{x}}</option>{% endfor %}</select>
+        </label>
+        <label>2) חשיבות ההכשרה * 
+          <select name="m2" required>{% for x in likert %}<option>{{x}}</option>{% endfor %}</select>
+        </label>
+        <label>3) מחויבות והתמדה * 
+          <select name="m3" required>{% for x in likert %}<option>{{x}}</option>{% endfor %}</select>
+        </label>
+      </div>
+    </section>
+
+    <!-- שלב 6 -->
+    <section class="step" data-step="6">
+      <h2>סיכום והצהרות</h2>
+      <label><input type="checkbox" name="arrival_confirm" required> אני מצהיר/ה שאגיע להכשרה המעשית *</label>
+      <label><input type="checkbox" name="confirm_all" required> אני מאשר/ת כי המידע שמסרתי נכון ומדויק *</label>
+      <p class="muted">לאחר לחיצה על “שליחה” הנתונים יישמרו.</p>
+    </section>
+
+    <!-- ניווט -->
+    <div class="wizard-nav">
+      <button type="button" id="prevBtn" class="btn ghost" disabled>הקודם</button>
+      <div class="spacer"></div>
+      <button type="button" id="nextBtn" class="btn">להבא</button>
+      <button type="submit" id="submitBtn" class="btn primary" style="display:none">שליחה ✉️</button>
+    </div>
+  </form>
+</main>
+
+<script>
+/* ---------- לוגיקת אשף ---------- */
+const steps = Array.from(document.querySelectorAll('.step'));
+const stepper = Array.from(document.querySelectorAll('#stepper li'));
+const form = document.getElementById('wizardForm');
+const nextBtn = document.getElementById('nextBtn');
+const prevBtn = document.getElementById('prevBtn');
+const submitBtn = document.getElementById('submitBtn');
+let current = 0;
+
+function showStep(i){
+  steps.forEach((s,idx)=> s.classList.toggle('active', idx===i));
+  stepper.forEach((li,idx)=>{
+    li.classList.toggle('active', idx===i);
+    li.classList.toggle('done', idx<i);
+  });
+  prevBtn.disabled = (i===0);
+  nextBtn.style.display = (i===steps.length-1) ? 'none' : '';
+  submitBtn.style.display = (i===steps.length-1) ? '' : 'none';
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+function validateStep(i){
+  const req = steps[i].querySelectorAll('[required]');
+  for (const el of req){
+    if (el.type === 'checkbox' && !el.checked) return false;
+    if (el.type !== 'checkbox' && !el.value) return false;
+  }
+  return true;
+}
+nextBtn.addEventListener('click', ()=>{
+  if (!validateStep(current)) { alert('נא למלא את כל השדות החובה בשלב זה.'); return; }
+  if (current < steps.length-1){ current++; showStep(current); }
+});
+prevBtn.addEventListener('click', ()=>{
+  if (current > 0){ current--; showStep(current); }
+});
+showStep(current);
+
+/* ---------- דינמיקות כמו ב-Streamlit ---------- */
+const motherT = document.getElementById('mother_t');
+const otherMtWrap = document.getElementById('other_mt_wrap');
+if (motherT) motherT.addEventListener('change', ()=> otherMtWrap.style.display = (motherT.value==='אחר') ? '' : 'none');
+
+const extraLangsSel = document.getElementById('extra_langs');
+const extraOtherWrap = document.getElementById('extra_other_wrap');
+if (extraLangsSel) extraLangsSel.addEventListener('change', ()=>{
+  const sel = Array.from(extraLangsSel.selectedOptions).map(o=>o.value);
+  extraOtherWrap.style.display = sel.includes('אחר') ? '' : 'none';
+});
+
+const studyYear = document.getElementById('study_year');
+const studyOtherWrap = document.getElementById('study_other_wrap');
+if (studyYear) studyYear.addEventListener('change', ()=> studyOtherWrap.style.display = (studyYear.value==='אחר') ? '' : 'none');
+
+const prevTraining = document.getElementById('prev_training');
+const prevExtra = document.querySelector('.prev-extra');
+if (prevTraining) prevTraining.addEventListener('change', ()=> prevExtra.style.display = (prevTraining.value!=='לא') ? '' : 'none');
+
+const domains = document.getElementById('domains');
+const topDomain = document.getElementById('top_domain');
+const domainsOtherWrap = document.getElementById('domains_other_wrap');
+if (domains) domains.addEventListener('change', ()=>{
+  const sel = Array.from(domains.selectedOptions).map(o=>o.value);
+  domainsOtherWrap.style.display = sel.includes('אחר') ? '' : 'none';
+  topDomain.innerHTML = '<option value="">— בחר/י —</option>' + sel.map(v=>`<option>${v}</option>`).join('');
+});
+
+// מילוי רשימות למקומות 2–3 + מניעת כפילויות
+const allSites = Array.from(document.querySelector('select[name="rank_1"]').options).map(o=>o.value).filter(Boolean);
+function syncRanks(){
+  const selects = Array.from(document.querySelectorAll('select.rank'));
+  const chosen = selects.map(s=>s.value).filter(Boolean);
+  selects.forEach(s=>{
+    const keep = new Set(chosen.filter(v=>v===s.value));
+    s.innerHTML = '<option value="">— בחר/י —</option>' + allSites.map(v=>{
+      const disabled = chosen.includes(v) && !keep.has(v);
+      return `<option ${disabled?'disabled':''} ${s.value===v?'selected':''}>${v}</option>`;
+    }).join('');
+  });
+}
+document.querySelectorAll('select.rank').forEach(s=> s.addEventListener('change', syncRanks));
+syncRanks();
+
+/* התאמות: אם נבחר "אין" בלבד – לא להציג פירוט */
+const adjustments = document.getElementById('adjustments');
+const adjOtherWrap = document.getElementById('adj_other_wrap');
+const adjDetailsWrap = document.getElementById('adj_details_wrap');
+if (adjustments) adjustments.addEventListener('change', ()=>{
+  const sel = Array.from(adjustments.selectedOptions).map(o=>o.value);
+  adjOtherWrap.style.display = sel.includes('אחר') ? '' : 'none';
+  adjDetailsWrap.style.display = (sel.includes('אין') && sel.length===1) ? 'none' : '';
+});
+</script>
+
+<!-- ===== Tag Multiselect (chips) ל- extra_langs ===== -->
+<script>
+(function(){
+  const sel = document.getElementById('extra_langs');
+  if(!sel) return;
+  const wrap = document.createElement('div');
+  wrap.className = 'tag-ms';
+  const control = document.createElement('div');
+  control.className = 'control';
+  const chipsBox = document.createElement('div');
+  chipsBox.style.display='contents';
+  const caret = document.createElement('div');
+  caret.className='caret';
+  control.appendChild(chipsBox);
+  control.appendChild(caret);
+  const menu = document.createElement('div');
+  menu.className = 'menu';
+  wrap.appendChild(control);
+  wrap.appendChild(menu);
+  sel.style.position='absolute';
+  sel.style.opacity='0';
+  sel.style.pointerEvents='none';
+  sel.after(wrap);
+  const hiddenJoined = document.getElementById('extraLangsJoined');
+  const extraOtherWrap = document.getElementById('extra_other_wrap');
+  function values(){ return Array.from(sel.selectedOptions).map(o=>o.value); }
+  function setJoined(){
+    const v = values();
+    if (hiddenJoined) hiddenJoined.value = v.join('; ');
+    if (extraOtherWrap) extraOtherWrap.style.display = v.includes('אחר') ? '' : 'none';
+  }
+  function renderChips(){
+    chipsBox.innerHTML = '';
+    values().forEach(v=>{
+      const chip = document.createElement('span');
+      chip.className = 'chip';
+      chip.innerHTML = `<span>${v}</span><button type="button">×</button>`;
+      chip.querySelector('button').onclick = ()=>{
+        Array.from(sel.options).find(o=>o.value===v).selected = false;
+        update();
+      };
+      chipsBox.appendChild(chip);
+    });
+  }
+  function renderMenu(){
+    menu.innerHTML = '';
+    const opts = Array.from(sel.options);
+    const selected = new Set(values());
+    opts.forEach(o=>{
+      if(!o.value) return;
+      const item = document.createElement('div');
+      item.className = 'item';
+      item.innerHTML = `<span>${o.textContent}</span><span class="check">${selected.has(o.value)?'✓':''}</span>`;
+      item.onclick = ()=>{
+        o.selected = !o.selected;
+        update();
+      };
+      menu.appendChild(item);
+    });
+  }
+  function update(){ renderChips(); renderMenu(); setJoined(); }
+  function toggle(open){ wrap.classList.toggle('open', open ?? !wrap.classList.contains('open')); }
+  control.addEventListener('click', ()=> toggle(true));
+  document.addEventListener('click', (e)=>{ if(!wrap.contains(e.target)) toggle(false); });
+  sel.addEventListener('change', update);
+  update();
+})();
+</script>
+</body>
+</html>

@@ -1,3 +1,4 @@
+streamlit
 Flask
 python-dotenv
 pandas
